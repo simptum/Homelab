@@ -1,0 +1,14 @@
+k3s-nodes:
+  hosts:
+    k3s-01:
+      ansible_host: 192.168.1.181
+    k3s-02:
+      ansible_host: 192.168.1.182
+    k3s-03:
+      ansible_host: 192.168.1.183
+    k3s-01-worker:
+      ansible_host: 192.168.1.184
+    k3s-02-worker:
+      ansible_host: 192.168.1.185
+    k3s-03-worker:
+      ansible_host: 192.168.1.186

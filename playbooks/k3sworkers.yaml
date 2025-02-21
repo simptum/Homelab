@@ -1,0 +1,39 @@
+---
+- name: Get device set up
+  hosts: [k3s-02, k3s-03, k3s-01-worker, k3s-02-worker, k3s-03-worker]
+  become: yes
+  become_user: root
+  vars_files:
+    - secret
+  vars:
+    ansible_become_password: "{{ sudo_password }}"
+
+  tasks:
+    - name: Update cache
+      apt: 
+        state: latest
+    - name: Update cache
+      apt: 
+        upgrade: yes
+    - name: Start timesyncd
+      systemd_service:
+        enabled: true
+        state: started
+        name: systemd-timesyncd.service
+    - name: Copy ntp file
+      template:
+        src: ./templates/timesyncd.conf
+        dest: /etc/systemd/timesyncd.conf
+    - name: Timedatectl
+      shell: |
+        timedatectl set-ntp true
+        timedatectl set-timezone America/Los_Angeles
+    - name: Remove swap
+      shell: |
+        swapoff /swap.img
+        if -f /swap.img; then
+          rm /swap.img
+        fi
+    - name: Install K3s
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ server_ip }}:6443 K3S_TOKEN={{ K3S_TOKEN }} sh -
