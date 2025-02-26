@@ -49,7 +49,7 @@
     - name: Install K3s
       shell: |
         ufw disable
-        curl -sfL https://get.k3s.io | sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --cluster-init" sh -s - 
 
     - name: Copy token
       shell: |

@@ -36,4 +36,4 @@
         fi
     - name: Install K3s
       shell: |
-        curl -sfL https://get.k3s.io | K3S_TOKEN={{ K3S_TOKEN }} sh -s - server --server https://{{ server_ip }}:6443
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --server https://{{ server_ip }}:6443" K3S_TOKEN={{ K3S_TOKEN }} sh -s - 

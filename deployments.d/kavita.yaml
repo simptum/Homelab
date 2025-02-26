@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: kavita-deployment
+  labels:
+    app: kavita
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kavita
+  template:
+    metadata:
+      labels:
+        app: kavita
+    spec:
+      containers:
+        - name: kavita
+          image: jvmilazz0/kavita:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: TZ
+              value: America/Los_Angeles
+          volumeMounts:
+            - name: kavita-storage
+              mountPath: /kavita/config
+      volumes:
+        - name: kavita-storage
+          persistentVolumeClaim:
+            claimName: kavita-pvc

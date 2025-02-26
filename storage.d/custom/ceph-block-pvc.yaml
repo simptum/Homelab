@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ceph-pvc
+  name: ceph-block-pvc
 spec:
   accessModes:
     - ReadWriteMany
