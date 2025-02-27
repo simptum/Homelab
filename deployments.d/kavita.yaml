@@ -29,10 +29,10 @@ spec:
           resources:
             limits:
               cpu: '1'
-              memory: '200Mi'
+              memory: '1Gi'
             requests:
-              cpu: '0.5'
-              memory: '100Mi'
+              cpu: '1'
+              memory: '1Gi'
       volumes:
         - name: kavita-storage
           persistentVolumeClaim:
