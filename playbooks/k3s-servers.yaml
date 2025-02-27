@@ -1,6 +1,6 @@
 ---
-- name: Testing out ansible!
-  hosts: k3s-nodes
+- name: Get device set up
+  hosts: [k3s-01, k3s-02, k3s-03]
   become: yes
   become_user: root
   vars_files:
@@ -9,9 +9,6 @@
     ansible_become_password: "{{ sudo_password }}"
 
   tasks:
-    - name: Update cache
-      apt: 
-        state: latest
-    - name: Apply sysctl.conf
+    - name: Update K3S config
       shell: |
         reboot now
