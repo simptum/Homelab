@@ -1,5 +1,5 @@
 ---
-- name: Testing out ansible!
+- name: Reboot entire cluster!
   hosts: k3s-nodes
   become: yes
   become_user: root
@@ -9,9 +9,6 @@
     ansible_become_password: "{{ sudo_password }}"
 
   tasks:
-    - name: Update cache
-      apt: 
-        state: latest
-    - name: Apply sysctl.conf
+    - name: Rebooting
       shell: |
         reboot now

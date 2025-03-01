@@ -1,7 +1,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: ceph-sc
+  name: ceph-rbd-sc
 provisioner: rbd.csi.ceph.com
 parameters:
   monitors: 192.168.1.171:6789,192.168.1.172:6789,192.168.1.173:6789,

@@ -1,6 +1,6 @@
 ---
 - name: Get device set up
-  hosts: k3s-01
+  hosts: [k3s-02, k3s-03]
   become: yes
   become_user: root
   vars_files:
@@ -12,52 +12,28 @@
     - name: Update cache
       apt: 
         state: latest
-
-    - name: Upgrade Packages
+    - name: Update cache
       apt: 
         upgrade: yes
-
-    - name: Start sntp
-      systemd_service:
-        enabled: true
-        state: started
-        name: systemd-timedated.service
-
     - name: Start timesyncd
       systemd_service:
         enabled: true
         state: started
         name: systemd-timesyncd.service
-
     - name: Copy ntp file
       template:
         src: ./templates/timesyncd.conf
         dest: /etc/systemd/timesyncd.conf
-
     - name: Timedatectl
       shell: |
         timedatectl set-ntp true
         timedatectl set-timezone America/Los_Angeles
-
     - name: Remove swap
       shell: |
+        swapoff /swap.img
         if -f /swap.img; then
-          swapoff /swap.img
           rm /swap.img
         fi
-
     - name: Install K3s
       shell: |
-        ufw disable
-        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=traefik --cluster-init" sh -s - 
-
-    - name: Copy token
-      shell: |
-        cat /var/lib/rancher/k3s/server/node-token
-      register: k3s_output
-
-    - name: Copy output to localhost
-      local_action:
-        module: copy
-        content: "{{ k3s_output }}"
-        dest: ./k3s_token.txt
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable=servicelb --disable=traefik --server https://{{ server_ip }}:6443" K3S_TOKEN={{ K3S_TOKEN }} sh -s - 

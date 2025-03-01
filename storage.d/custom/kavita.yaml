@@ -4,9 +4,8 @@ metadata:
   name: kavita-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: ceph-sc
+  storageClassName: ceph-fs-sc
