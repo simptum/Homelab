@@ -6,14 +6,14 @@ metadata:
 provisioner: cephfs.csi.ceph.com
 parameters:
   clusterID: fddc0aff-67cf-48d8-9704-04e14b897ed1
-  fsName: K3S_SharedFS
-  pool: K3S_SharedFS_data
-  csi.storage.k8s.io/provisioner-secret-name: ceph-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: default
-  csi.storage.k8s.io/controller-expand-secret-name: ceph-secret
-  csi.storage.k8s.io/controller-expand-secret-namespace: default
-  csi.storage.k8s.io/node-stage-secret-name: ceph-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: default
+  fsName: K3S_CephFS
+  csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: ceph
+  csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: ceph
+  csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: ceph
+  mounter: kernel
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 mountOptions:

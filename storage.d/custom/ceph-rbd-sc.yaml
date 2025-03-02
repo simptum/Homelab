@@ -7,12 +7,12 @@ parameters:
   monitors: 192.168.1.171:6789,192.168.1.172:6789,192.168.1.173:6789,
   pool: K3S_PVC_Pool
   clusterID: fddc0aff-67cf-48d8-9704-04e14b897ed1
-  csi.storage.k8s.io/provisioner-secret-name: ceph-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: default
-  csi.storage.k8s.io/controller-expand-secret-name: ceph-secret
-  csi.storage.k8s.io/controller-expand-secret-namespace: default
-  csi.storage.k8s.io/node-stage-secret-name: ceph-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: default
+  csi.storage.k8s.io/provisioner-secret-name: ceph-rbd-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: ceph
+  csi.storage.k8s.io/controller-expand-secret-name: ceph-rbd-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: ceph
+  csi.storage.k8s.io/node-stage-secret-name: ceph-rbd-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: ceph
   imageFeatures: layering
   fsType: ext4
 reclaimPolicy: Retain
