@@ -1,4 +1,4 @@
-secrets.d/
-secrets.d/*
+secrets/
+secrets/*
 playbooks/secret
 k3s_token.txt

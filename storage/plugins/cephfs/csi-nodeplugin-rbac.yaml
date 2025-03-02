@@ -9,6 +9,7 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cephfs-csi-nodeplugin
+  namespace: ceph
 rules:
   - apiGroups: [""]
     resources: ["nodes"]
@@ -30,6 +31,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cephfs-csi-nodeplugin
+  namespace: ceph
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-nodeplugin

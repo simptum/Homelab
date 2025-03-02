@@ -11,10 +11,7 @@ data:
           "192.168.1.173:6789"
         ],
         "cephFS": {
-          "subvolumeGroup": "csi",
-          "netNamespaceFilePath": "/var/lib/kubelet/plugins/cephfs.csi.ceph.com/net",
-          "kernelMountOptions": "noatime,nosuid,nodev",
-          "fuseMountOptions": "allow_other"
+          "subvolumeGroup": "csi"
         }
       }
     ]

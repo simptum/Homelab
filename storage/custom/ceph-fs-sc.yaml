@@ -8,11 +8,10 @@ parameters:
   clusterID: fddc0aff-67cf-48d8-9704-04e14b897ed1
   fsName: K3S_CephFS
   csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: ceph
-  csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/controller-expand-secret-namespace: ceph
   csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: ceph
   csi.storage.k8s.io/node-stage-secret-namespace: ceph
+  subvolume: /volumes/_nogroup/csi/0b4c649e-6bee-4163-b12b-cddc5d3d9608
   mounter: kernel
 reclaimPolicy: Retain
 allowVolumeExpansion: true

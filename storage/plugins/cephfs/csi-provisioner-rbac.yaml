@@ -79,7 +79,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
-    namespace: default
+    namespace: ceph
 roleRef:
   kind: ClusterRole
   name: cephfs-external-provisioner-runner
@@ -111,7 +111,7 @@ subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
     # replace with non-default namespace name
-    namespace: default
+    namespace: ceph
 roleRef:
   kind: Role
   name: cephfs-external-provisioner-cfg
