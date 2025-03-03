@@ -11,6 +11,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: kavita
+            name: kavita-service
             port:
               number: 80
