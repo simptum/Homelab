@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kavita-ssl  # <-- Replace with your certificate name
+  namespace: default  # <-- Replace with your namespace
+spec:
+  secretName: kavita-ssl  # <-- Replace with your secret name
+  issuerRef:
+    name: cloudflare-issuer  # <-- Replace with your issuer name
+    kind: ClusterIssuer
+  dnsNames:
+    - 'kavita2.simptum.net'  # <-- Replace with your hostname
