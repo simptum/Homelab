@@ -10,4 +10,4 @@ spec:
     name: cloudflare-issuer  # <-- Replace with your issuer name
     kind: ClusterIssuer
   dnsNames:
-    - 'kavita2.simptum.net'  # <-- Replace with your hostname
+    - 'kavita.simptum.net'  # <-- Replace with your hostname

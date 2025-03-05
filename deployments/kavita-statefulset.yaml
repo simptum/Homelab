@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: default
+  name: kavita
+  labels:
+    app: kavita
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kavita
+  template:
+    metadata:
+      labels:
+        app: kavita
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/worker
+                    operator: In
+                    values:
+                      - "true"
+      containers:
+        - name: kavita
+          image: jvmilazz0/kavita:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: TZ
+              value: America/Los_Angeles
+          volumeMounts:
+            - name: kavita-storage
+              mountPath: /kavita/config
+          resources:
+            limits:
+              cpu: '1'
+              memory: '1Gi'
+            requests:
+              cpu: '1'
+              memory: '1Gi'
+      volumes:
+        - name: kavita-storage
+          persistentVolumeClaim:
+            claimName: kavita-static-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kavita-service
+  namespace: default
+spec:
+  selector:
+    app: kavita
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kavita-ingress
+  annotations:
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: kavita.simptum.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kavita-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+      - kavita.simptum.net
+    secretName: kavita-ssl

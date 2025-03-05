@@ -12,7 +12,6 @@ spec:
     solvers:
     - dns01:
         cloudflare:
-          email: martinezbrosjosiah@gmail.com
-          apiKeySecretRef:
-            name: cloudflare-api-key
-            key: api-key
+          apiTokenSecretRef:
+            name: cloudflare-api-token
+            key: api-token
