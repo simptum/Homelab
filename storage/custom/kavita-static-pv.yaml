@@ -10,14 +10,10 @@ spec:
   csi:
     driver: cephfs.csi.ceph.com
     nodeStageSecretRef:
-      # node stage secret name
       name: csi-cephfs-secret
-      # node stage secret namespace where above secret is created
       namespace: ceph
     volumeAttributes:
-      # optional file system to be mounted
       "fsName": "K3S_CephFS"
-      # Required options from storageclass parameters need to be added in volumeAttributes
       "clusterID": "fddc0aff-67cf-48d8-9704-04e14b897ed1"
       "staticVolume": "true"
       "rootPath": /volumes/csi/kavita/3560278f-5c51-4014-823c-ead622065050
