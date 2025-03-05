@@ -6,7 +6,7 @@ metadata:
   labels:
     app: kavita
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: kavita
@@ -48,6 +48,17 @@ spec:
             claimName: kavita-static-pvc
 
 ---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: kavita-pdb
+spec:
+  minAvailable: 1  # Ensures at least one pod is always running
+  selector:
+    matchLabels:
+      app: kavita
+
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -60,12 +71,14 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5000
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kavita-ingress
   annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   rules:
