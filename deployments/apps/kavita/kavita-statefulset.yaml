@@ -69,7 +69,7 @@ spec:
     app: kavita
   ports:
     - protocol: TCP
-      port: 80
+      port: 443
       targetPort: 5000
 
 ---
@@ -91,7 +91,7 @@ spec:
           service:
             name: kavita-service
             port:
-              number: 80
+              number: 443
   tls:
   - hosts:
       - kavita.simptum.net
