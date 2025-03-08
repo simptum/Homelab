@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: default
+  name: linkding
+  labels:
+    app: linkding
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linkding
+  template:
+    metadata:
+      labels:
+        app: linkding
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/worker
+                    operator: In
+                    values:
+                      - "true"
+      containers:
+        - name: linkding
+          image: sissbruecker/linkding:1.39.1
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: linkding-storage
+              mountPath: /etc/linkding/data
+          #resources:
+            #limits:
+              #cpu: '1'
+              #memory: '1Gi'
+            #requests:
+              #cpu: '1'
+              #memory: '1Gi'
+      volumes:
+        - name: linkding-storage
+          persistentVolumeClaim:
+            claimName: linkding-static-pvc
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: linkding-pdb
+spec:
+  minAvailable: 1  
+  selector:
+    matchLabels:
+      app: linkding
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkding-service
+  namespace: default
+spec:
+  selector:
+    app: linkding
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 9090
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: linkding-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "cloudflare-issuer"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: linkding.simptum.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: linkding-service
+            port:
+              number: 443
+  tls:
+  - hosts:
+      - linkding.simptum.net
+    secretName: linkding-ssl

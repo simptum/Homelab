@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: linkding-ssl  # <-- Replace with your certificate name
+  namespace: default  # <-- Replace with your namespace
+spec:
+  secretName: linkding-ssl  # <-- Replace with your secret name
+  issuerRef:
+    name: cloudflare-issuer  # <-- Replace with your issuer name
+    kind: ClusterIssuer
+  dnsNames:
+    - 'linkding.simptum.net'  # <-- Replace with your hostname

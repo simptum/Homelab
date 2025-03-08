@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudflared-kavita
+  name: cloudflared-linkding
   namespace: infra
 spec:
   selector:
     matchLabels:
-      app: cloudflared-kavita
+      app: cloudflared-linkding
   replicas: 2 # You could also consider elastic scaling for this deployment
   template:
     metadata:
       labels:
-        app: cloudflared-kavita
+        app: cloudflared-linkding
     spec:
       containers:
-      - name: cloudflared-kavita
+      - name: cloudflared-linkding
         image: cloudflare/cloudflared:latest
         args:
         - tunnel
@@ -53,11 +53,11 @@ spec:
           # kubectl create secret generic tunnel-credentials \
           # --from-file=credentials.json=/Users/yourusername/.cloudflared/<tunnel ID>.json
           # ```
-          secretName: kavita-cloudflared-secret
+          secretName: linkding-cloudflared-secret
       # Create a config.yaml file from the ConfigMap below.
       - name: config
         configMap:
-          name: cloudflared-kavita
+          name: cloudflared-linkding
           items:
           - key: config.yaml
             path: config.yaml
@@ -69,12 +69,12 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloudflared-kavita
+  name: cloudflared-linkding
   namespace: infra
 data:
   config.yaml: | #
     # Name of the tunnel you want to run
-    tunnel: kavita
+    tunnel: linkding
     credentials-file: /etc/cloudflared/creds/credentials.json
     # Serves the metrics server under /metrics and the readiness server under /ready
     metrics: 0.0.0.0:2000
@@ -91,9 +91,9 @@ data:
     # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
     ingress:
     # The first rule proxies traffic to the httpbin sample Service defined in app.yaml
-    - hostname: kavita.simptum.net
+    - hostname: linkding.simptum.net
       service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
       originRequest:
-        originServerName: kavita.simptum.net
+        originServerName: linkding.simptum.net
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404
