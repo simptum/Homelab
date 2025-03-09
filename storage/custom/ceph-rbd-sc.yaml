@@ -14,7 +14,7 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-name: ceph-rbd-secret
   csi.storage.k8s.io/node-stage-secret-namespace: ceph
   imageFeatures: layering
-  fsType: ext4
+  #fsType: ext4
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 mountOptions:
