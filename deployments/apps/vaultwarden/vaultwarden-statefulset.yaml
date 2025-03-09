@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   namespace: default
-  name: kavita
+  name: vaultwarden
   labels:
-    app: kavita
+    app: vaultwarden
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kavita
+      app: vaultwarden
   template:
     metadata:
       labels:
-        app: kavita
+        app: vaultwarden
     spec:
       affinity:
         nodeAffinity:
@@ -35,16 +35,13 @@ spec:
           effect: "NoExecute"
           tolerationSeconds: 10 
       containers:
-        - name: kavita
-          image: jvmilazz0/kavita:latest
+        - name: vaultwarden
+          image: vaultwarden/server:1.33.2
           ports:
-            - containerPort: 5000
-          env:
-            - name: TZ
-              value: America/Los_Angeles
+            - containerPort: 80
           volumeMounts:
-            - name: kavita-storage
-              mountPath: /kavita/config
+            - name: vaultwarden-storage
+              mountPath: /data
           resources:
             limits:
               cpu: '1'
@@ -53,56 +50,56 @@ spec:
               cpu: '1'
               memory: '1Gi'
       volumes:
-        - name: kavita-storage
+        - name: vaultwarden-storage
           persistentVolumeClaim:
-            claimName: kavita-static-pvc
+            claimName: vaultwarden-static-pvc
 
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: kavita-pdb
+  name: vaultwarden-pdb
 spec:
   maxUnavailable: 1  
   selector:
     matchLabels:
-      app: kavita
+      app: vaultwarden
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kavita-service
+  name: vaultwarden-service
   namespace: default
 spec:
   selector:
-    app: kavita
+    app: vaultwarden
   ports:
     - protocol: TCP
-      port: 443
-      targetPort: 5000
+      port: 80
+      targetPort: 80
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kavita-ingress
+  name: vaultwarden-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   rules:
-  - host: kavita.simptum.net
+  - host: vaultwarden.simptum.net
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: kavita-service
+            name: vaultwarden-service
             port:
-              number: 443
+              number: 80
   tls:
   - hosts:
-      - kavita.simptum.net
-    secretName: kavita-ssl
+      - vaultwarden.simptum.net
+    secretName: vaultwarden-ssl

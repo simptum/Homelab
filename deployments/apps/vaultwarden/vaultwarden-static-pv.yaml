@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vaultwarden-static-pv
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 5Gi
+  csi:
+    driver: cephfs.csi.ceph.com
+    nodeStageSecretRef:
+      name: csi-cephfs-secret
+      namespace: ceph
+    volumeAttributes:
+      "fsName": "K3S_CephFS"
+      "clusterID": "fddc0aff-67cf-48d8-9704-04e14b897ed1"
+      "staticVolume": "true"
+      "rootPath": /volumes/csi/vaultwarden/c913dfb7-6b3b-4e38-9f68-765cd5248425
+    volumeHandle: vaultwarden-static-pv
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem

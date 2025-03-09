@@ -24,6 +24,16 @@ spec:
                     operator: In
                     values:
                       - "true"
+      terminationGracePeriodSeconds: 15  
+      tolerations:
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 10  
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 10 
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.39.1
@@ -32,13 +42,13 @@ spec:
           volumeMounts:
             - name: linkding-storage
               mountPath: /etc/linkding/data
-          #resources:
-            #limits:
-              #cpu: '1'
-              #memory: '1Gi'
-            #requests:
-              #cpu: '1'
-              #memory: '1Gi'
+          resources:
+            limits:
+              cpu: '1'
+              memory: '1Gi'
+            requests:
+              cpu: '1'
+              memory: '1Gi'
       volumes:
         - name: linkding-storage
           persistentVolumeClaim:
@@ -50,7 +60,7 @@ kind: PodDisruptionBudget
 metadata:
   name: linkding-pdb
 spec:
-  minAvailable: 1  
+  maxUnavailable: 1  
   selector:
     matchLabels:
       app: linkding
@@ -75,7 +85,7 @@ kind: Ingress
 metadata:
   name: linkding-ingress
   annotations:
-    cert-manager.io/cluster-issuer: "cloudflare-issuer"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   rules:
